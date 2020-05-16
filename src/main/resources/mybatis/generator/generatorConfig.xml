@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry
+            location="/Users/zhang/.m2/repository/mysql/mysql-connector-java/8.0.13/mysql-connector-java-8.0.13.jar"/>
+    <context id="my" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/csweb?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=GMT"
+                        userId="root"
+                        password="root"/>
+
+        <javaModelGenerator targetPackage="com.fyp.websitebackend.csweb.domain"
+                            targetProject="/Users/zhang/IdeaProjects/website-backend/src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mybatis.mapper"
+                         targetProject="/Users/zhang/IdeaProjects/website-backend/src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="com.fyp.websitebackend.csweb.mapper"
+                             targetProject="/Users/zhang/IdeaProjects/website-backend/src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <table tableName="cards" domainObjectName="HomeCard"
+               enableCountByExample="true" enableUpdateByExample="true"
+               enableDeleteByExample="true" enableSelectByExample="true"
+               selectByExampleQueryId="true">
+        </table>
+        <!--
+                    this is a demo
+                <table tableName="tbl_user_config" domainObjectName="UserConfig"
+                       enableCountByExample="true" enableUpdateByExample="true"
+                       enableDeleteByExample="true" enableSelectByExample="true"
+                       selectByExampleQueryId="true"></table>-->
+
+    </context>
+</generatorConfiguration>

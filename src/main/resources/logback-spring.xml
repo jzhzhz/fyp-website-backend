@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- magenta:洋红 -->
+<!-- boldMagenta:粗红-->
+<!-- cyan:青色 -->
+<!-- white:白色 -->
+<!-- magenta:洋红 -->
+<!-- boldYellow:金黄 -->
+<!-- green:绿色 -->
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <!--print log to console-->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%magenta(%d{HH:mm:ss}) %green([%thread]) %white(%-5level) %boldCyan(%logger{36}) - %yellow(%msg%n)</pattern>
+        </encoder>
+    </appender>
+    <!--generate log by day-->
+    <!-- log level is debug -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/logback.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--output log file name-->
+            <FileNamePattern>logs/logback-%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <MaxHistory>365</MaxHistory>
+            <!--log file deleted when reach total-->
+            <totalSizeCap>10GB</totalSizeCap>
+            <MaxFileSize>10MB</MaxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} - %msg %n</pattern>
+            <charset>UTF-8</charset> <!-- set the charset -->
+        </encoder>
+    </appender>
+    <logger name="com.fyp.websitebackend" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
