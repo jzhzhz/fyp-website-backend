@@ -24,16 +24,13 @@ public class AdminController {
 
     @RequestMapping("/checkAdmin")
     public CustomResponseEntity checkAdminValidity(CheckAdminParam checkAdminParam) {
-        System.out.println("handling admin check: " + checkAdminParam.toString());
         boolean result = adminService.checkAdmin(checkAdminParam);
-        System.out.println("returning check admin result: " + result);
+
         return CustomResponseEntity.success(result);
     }
 
     @RequestMapping("/updateHomeTextBlock")
     public CustomResponseEntity updateHomeTextBlock(UpdateHomeTextBlockParam updateHomeTextBlockParam) {
-        System.out.println("handling text block update request...");
-        System.out.println("params are: " + updateHomeTextBlockParam.toString());
         int result = adminService.updateHomeTextBlock(updateHomeTextBlockParam);
         if (result == 1) {
             return CustomResponseEntity.success(result);
@@ -52,15 +49,12 @@ public class AdminController {
     @RequestMapping("/createNewCard")
     public CustomResponseEntity createNewCard(UpdateHomeCardParam updateHomeCardParam) {
         int result = adminService.createNewCard(updateHomeCardParam);
-        System.out.println("return new card id: " + result);
+
         return CustomResponseEntity.success(result);
     }
 
     @RequestMapping("/updateLabel")
     public CustomResponseEntity updateLabel(UpdateLabelParam updateLabelParam) {
-        System.out.println("handling label update request...");
-        System.out.println("params are: " + updateLabelParam.toString());
-
         int result = adminService.updateNavBarLabel(updateLabelParam);
         if (result == 1) {
             return CustomResponseEntity.success(result);
@@ -71,8 +65,6 @@ public class AdminController {
 
     @RequestMapping("/createNewLabel")
     public CustomResponseEntity createNewLabel(UpdateLabelParam updateLabelParam) {
-        System.out.println("handling create new label request...");
-        System.out.println("params are: " + updateLabelParam.toString());
         int result = adminService.createNewLabel(updateLabelParam);
 
         return CustomResponseEntity.success(result);

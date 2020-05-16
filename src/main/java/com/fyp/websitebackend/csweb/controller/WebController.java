@@ -29,9 +29,7 @@ public class WebController {
 
     @RequestMapping("/getLabels")
     public CustomResponseEntity getAboutLabels(String labelType) {
-        System.out.println("handling get " + labelType + " labels request!");
         List<Label> labels = websiteService.findAllLabels(labelType);
-        System.out.println("Returning " + labels.get(0).toString());
 
         return CustomResponseEntity.success(labels);
     }
@@ -39,24 +37,20 @@ public class WebController {
     @RequestMapping("/getHomeTextBlockByType")
     public CustomResponseEntity getHomeTextBlockByType(String type) {
         List<HomeTextBlockVO> homeTextBlockVOs = websiteService.getHomeTextBlockByType(type);
-        System.out.println("returning home text blocks: " + homeTextBlockVOs.get(0).toString());
+
         return CustomResponseEntity.success(homeTextBlockVOs);
     }
 
     @RequestMapping("/getLabelByUrl")
     public CustomResponseEntity getLabelByUrl(String url) {
-        System.out.println("handling get label with url: " + url);
         List<Label> labels = websiteService.getLabelByUrl(url);
-        System.out.println("Returning " + labels.get(0).toString());
 
         return CustomResponseEntity.success(labels);
     }
 
     @RequestMapping("/getFacultyByType")
     public CustomResponseEntity getFacultyByType(String type) {
-        System.out.println("handling get " + type + " faculty");
         List<Faculty> faculties = websiteService.getFacultyByType(type);
-        System.out.println("returning faculty..." + faculties.get(0).toString());
 
         return CustomResponseEntity.success(faculties);
     }
