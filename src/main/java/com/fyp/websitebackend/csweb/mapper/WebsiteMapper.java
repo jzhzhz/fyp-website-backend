@@ -4,12 +4,8 @@ import com.fyp.websitebackend.csweb.domain.Faculty;
 import com.fyp.websitebackend.csweb.domain.HomeCard;
 import com.fyp.websitebackend.csweb.domain.HomeTextBlock;
 import com.fyp.websitebackend.csweb.domain.Label;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
-import javax.smartcardio.Card;
 import java.util.List;
 
 @Mapper
@@ -33,9 +29,11 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     int insertNewLabel(Label label);
 
-    @Select("SELECT * FROM faculty WHERE type = #{facultyType}")
+    @Select("SELECT * FROM faculty WHERE type = #{facultyType} ORDER BY name")
     List<Faculty> getFacultyByType(String facultyType);
 
     @Select("SELECT *, img_url AS imgUrl FROM cards WHERE deprecated = 0")
     List<HomeCard> getAllCard();
+
+    List<Faculty> searchFacultyByName(@Param("name") String name, @Param("facultyType") String facultyType);
 }

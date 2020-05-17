@@ -4,17 +4,16 @@
     <resultMap id="FacultyResultMap" type="com.fyp.websitebackend.csweb.domain.Faculty" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="office" property="office" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
         <result column="type" property="type" jdbcType="VARCHAR" />
     </resultMap>
-    <select id="findAllUserListByInfoId" parameterType="java.lang.Integer" resultMap="FacultyResultMap">
-        select
-            *,
-            faculty.id AS faculty_id
-        FROM faculty
-        LEFT JOIN navbar_labels ON faculty.id = navbar_labels.id
-        WHERE faculty.id = #{facultyId};
+    <select id="searchFacultyByName" resultMap="FacultyResultMap">
+        SELECT * FROM faculty
+        WHERE name LIKE #{name, jdbcType=VARCHAR} AND type = #{facultyType, jdbcType=VARCHAR}
+        ORDER BY name;
     </select>
 </mapper>

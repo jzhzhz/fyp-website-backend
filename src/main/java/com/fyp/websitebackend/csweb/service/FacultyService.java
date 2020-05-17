@@ -1,8 +1,10 @@
 package com.fyp.websitebackend.csweb.service;
 
+import com.fyp.websitebackend.csweb.controller.param.SearchFacultyParam;
 import com.fyp.websitebackend.csweb.domain.Faculty;
 import com.fyp.websitebackend.csweb.domain.FacultyExample;
 import com.fyp.websitebackend.csweb.mapper.FacultyMapper;
+import com.fyp.websitebackend.csweb.mapper.WebsiteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +15,17 @@ public class FacultyService {
     @Autowired
     FacultyMapper facultyMapper;
 
-    List<Faculty> getCertainFaculty(String phone, String email) {
-        FacultyExample facultyExample = new FacultyExample();
-        facultyExample.createCriteria()
-                .andPhoneEqualTo(phone)
-                .andEmailEqualTo(email);
+    @Autowired
+    WebsiteMapper websiteMapper;
 
-        List<Faculty> requiredFaculty = facultyMapper.selectByExample(facultyExample);
-        if (requiredFaculty == null || requiredFaculty.size() <= 0) {
+    public List<Faculty> getFacultyByNameWithType(SearchFacultyParam searchFacultyParam) {
+        String nameToSearch = "%" + searchFacultyParam.getName() + "%";
+        List<Faculty> facultyList = websiteMapper
+                .searchFacultyByName(nameToSearch, searchFacultyParam.getType());
+        if (facultyList == null && facultyList.size() <= 0) {
             return null;
         }
 
-        return requiredFaculty;
+        return facultyList;
     }
 }
