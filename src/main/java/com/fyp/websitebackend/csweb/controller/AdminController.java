@@ -7,9 +7,11 @@ import com.fyp.websitebackend.csweb.controller.param.UpdateHomeCardParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateHomeTextBlockParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateLabelParam;
 import com.fyp.websitebackend.csweb.service.AdminService;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -85,5 +87,21 @@ public class AdminController {
                     file.getContentType()));
             return CustomResponseEntity.error("invalid file type!");
         }
+    }
+
+    @RequestMapping("/getFacultyExcelFile")
+    public ResponseEntity<?> getFacultyExcel() {
+        byte[] excelBytes;
+        try {
+            excelBytes = adminService.getFacultyExcelFile();
+        } catch (Exception e) {
+            logger.error(e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(e);
+        }
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition",
+                        "attachment; filename=faculty-list.xlsx")
+                .body(excelBytes);
     }
 }

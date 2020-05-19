@@ -6,16 +6,20 @@ import com.fyp.websitebackend.csweb.controller.param.UpdateHomeTextBlockParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateLabelParam;
 import com.fyp.websitebackend.csweb.domain.*;
 import com.fyp.websitebackend.csweb.mapper.*;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -138,5 +142,44 @@ public class AdminService {
         }
 
         return visitPath;
+    }
+
+    public byte[] getFacultyExcelFile() throws IOException {
+        List<Faculty> facultyList = websiteMapper.getAllFaculties();
+        Workbook wb = new XSSFWorkbook();
+        Sheet facultySheet = wb.createSheet("faculty list");
+
+        String[] headCol = {"Id", "Name", "Username", "Phone", "Office",
+            "Email", "URL", "Type"};
+        Row headerRow = facultySheet.createRow(0);
+
+        // assign values for header
+        for (int i = 0; i < headCol.length; i++) {
+            headerRow.createCell(i).setCellValue(headCol[i]);
+        }
+
+        Row eachRow = null;
+        for (int i = 0; i < facultyList.size(); i++) {
+            eachRow = facultySheet.createRow(i+1);
+            Faculty faculty = facultyList.get(i);
+
+            eachRow.createCell(0).setCellValue(faculty.getId());
+            eachRow.createCell(1).setCellValue(faculty.getName());
+            eachRow.createCell(2).setCellValue(faculty.getUsername());
+            eachRow.createCell(3).setCellValue(faculty.getPhone());
+            eachRow.createCell(4).setCellValue(faculty.getOffice());
+            eachRow.createCell(5).setCellValue(faculty.getEmail());
+            eachRow.createCell(6).setCellValue(faculty.getUrl());
+            eachRow.createCell(7).setCellValue(faculty.getType());
+        }
+
+        for (int i = 1; i < headCol.length; i++) {
+            facultySheet.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        wb.write(bos);
+
+        return bos.toByteArray();
     }
 }

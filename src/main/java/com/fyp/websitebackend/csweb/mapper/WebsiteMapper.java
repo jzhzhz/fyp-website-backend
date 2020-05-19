@@ -29,7 +29,7 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     int insertNewLabel(Label label);
 
-    @Select("SELECT * FROM faculty ORDER BY name")
+    @Select("SELECT * FROM faculty")
     List<Faculty> getAllFaculties();
 
     @Select("SELECT * FROM faculty WHERE type = #{facultyType} ORDER BY name")
