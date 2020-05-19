@@ -29,6 +29,9 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     int insertNewLabel(Label label);
 
+    @Select("SELECT * FROM faculty ORDER BY name")
+    List<Faculty> getAllFaculties();
+
     @Select("SELECT * FROM faculty WHERE type = #{facultyType} ORDER BY name")
     List<Faculty> getFacultyByType(String facultyType);
 

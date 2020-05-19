@@ -2,6 +2,7 @@ package com.fyp.websitebackend.csweb.controller;
 
 import com.fyp.websitebackend.common.entity.CustomResponseEntity;
 import com.fyp.websitebackend.csweb.controller.param.SearchFacultyParam;
+import com.fyp.websitebackend.csweb.controller.param.UpdateFacultyUrlParam;
 import com.fyp.websitebackend.csweb.domain.Faculty;
 import com.fyp.websitebackend.csweb.service.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ public class FacultyController {
     }
 
     @RequestMapping("/updateFacultyUrl")
-    public CustomResponseEntity updateFacultyUrl(String url) {
-        return CustomResponseEntity.success(0);
+    public CustomResponseEntity updateFacultyUrl(UpdateFacultyUrlParam updateFacultyUrlParam) {
+        int result = facultyService.updateFacultyUrl(updateFacultyUrlParam);
+
+        return CustomResponseEntity.success(result);
     }
 }

@@ -1,10 +1,12 @@
 package com.fyp.websitebackend.csweb.service;
 
 import com.fyp.websitebackend.csweb.controller.param.SearchFacultyParam;
+import com.fyp.websitebackend.csweb.controller.param.UpdateFacultyUrlParam;
 import com.fyp.websitebackend.csweb.domain.Faculty;
 import com.fyp.websitebackend.csweb.domain.FacultyExample;
 import com.fyp.websitebackend.csweb.mapper.FacultyMapper;
 import com.fyp.websitebackend.csweb.mapper.WebsiteMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +29,15 @@ public class FacultyService {
         }
 
         return facultyList;
+    }
+
+    public int updateFacultyUrl(UpdateFacultyUrlParam updateFacultyUrlParam) {
+        Faculty faculty = new Faculty();
+        BeanUtils.copyProperties(updateFacultyUrlParam, faculty);
+
+        FacultyExample facultyExample = new FacultyExample();
+        facultyExample.createCriteria().andIdEqualTo(updateFacultyUrlParam.getId());
+
+        return facultyMapper.updateByExampleSelective(faculty, facultyExample);
     }
 }
