@@ -106,7 +106,7 @@ public class AdminService {
         return homeCardMapper.updateByExampleSelective(homeCard, homeCardExample);
     }
 
-    public String saveCardPicture(MultipartFile pictureFile) {
+    public String saveCardPicture(MultipartFile pictureFile, String picType) {
         if (pictureFile.isEmpty()) {
             throw new NullPointerException("empty picture file");
         }
@@ -122,8 +122,24 @@ public class AdminService {
         String fileName = timeStamp + randomFileName +"." + suffix;
 
         String staticPath = ClassUtils.getDefaultClassLoader().getResource("static").getPath();
+
         // url path under static folder
-        String urlPath = "card-img" + File.separator + fileName;
+        String urlPath = null;
+        switch (picType) {
+            case "card":
+                urlPath = "card-img" + File.separator + fileName;
+                break;
+            case "profile":
+                urlPath = "profile-img" + File.separator + fileName;
+                break;
+            case "carousel":
+                urlPath = "carousel-img" + File.separator + fileName;
+                break;
+            default:
+                logger.error("unknown image type!");
+                throw new IllegalArgumentException("invalid image type");
+        }
+
         // whole save path
         String savePath = staticPath + File.separator + urlPath;
         logger.info("save path：" + savePath);

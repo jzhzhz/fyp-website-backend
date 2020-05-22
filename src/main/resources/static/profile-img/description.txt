@@ -1,0 +1,1 @@
+this directory is to store the pictures used in a certain page.

@@ -7,7 +7,6 @@ import com.fyp.websitebackend.csweb.controller.param.UpdateHomeCardParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateHomeTextBlockParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateLabelParam;
 import com.fyp.websitebackend.csweb.service.AdminService;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,9 @@ public class AdminController {
     @RequestMapping("/checkAdmin")
     public CustomResponseEntity checkAdminValidity(CheckAdminParam checkAdminParam) {
         boolean result = adminService.checkAdmin(checkAdminParam);
+        if (!result) {
+            logger.warn("invalid login information! returning false");
+        }
 
         return CustomResponseEntity.success(result);
     }
@@ -77,12 +79,29 @@ public class AdminController {
         String fileType = file.getContentType();
 
         if (WebConstants.CARD_PIC_TYPES.contains(fileType)) {
-            String visitUrl = adminService.saveCardPicture(file);
+            String visitUrl = adminService.saveCardPicture(file, "card");
 
             logger.info(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
             return CustomResponseEntity.success(visitUrl);
         } else {
-            logger.info(String.format("File name '%s' has invalid file type, which is %s",
+            logger.warn(String.format("File name '%s' has invalid file type, which is %s",
+                    file.getOriginalFilename(),
+                    file.getContentType()));
+            return CustomResponseEntity.error("invalid file type!");
+        }
+    }
+
+    @RequestMapping("/uploadProfilePic")
+    public CustomResponseEntity uploadProfilePic(@RequestParam("file") MultipartFile file) {
+        String fileType = file.getContentType();
+
+        if (WebConstants.CARD_PIC_TYPES.contains(fileType)) {
+            String visitUrl = adminService.saveCardPicture(file, "profile");
+
+            logger.info(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
+            return CustomResponseEntity.success(visitUrl);
+        } else {
+            logger.warn(String.format("File name '%s' has invalid file type, which is %s",
                     file.getOriginalFilename(),
                     file.getContentType()));
             return CustomResponseEntity.error("invalid file type!");
