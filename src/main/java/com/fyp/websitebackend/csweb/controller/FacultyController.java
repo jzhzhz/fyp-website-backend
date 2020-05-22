@@ -3,7 +3,9 @@ package com.fyp.websitebackend.csweb.controller;
 import com.fyp.websitebackend.common.entity.CustomResponseEntity;
 import com.fyp.websitebackend.csweb.controller.param.SearchFacultyParam;
 import com.fyp.websitebackend.csweb.controller.param.UpdateFacultyUrlParam;
+import com.fyp.websitebackend.csweb.controller.param.UpdateGeneralProfileParam;
 import com.fyp.websitebackend.csweb.domain.Faculty;
+import com.fyp.websitebackend.csweb.domain.ProfileGeneral;
 import com.fyp.websitebackend.csweb.service.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,9 +28,23 @@ public class FacultyController {
         return CustomResponseEntity.success(facultyList);
     }
 
+    @RequestMapping("/getGeneralProfile")
+    public CustomResponseEntity getGeneralProfile(String username) {
+        List<ProfileGeneral> profileGenerals = facultyService.getGeneralProfileByUsername(username);
+
+        return CustomResponseEntity.success(profileGenerals);
+    }
+
     @RequestMapping("/updateFacultyUrl")
     public CustomResponseEntity updateFacultyUrl(UpdateFacultyUrlParam updateFacultyUrlParam) {
         int result = facultyService.updateFacultyUrl(updateFacultyUrlParam);
+
+        return CustomResponseEntity.success(result);
+    }
+
+    @RequestMapping("updateGeneralProfile")
+    public CustomResponseEntity updateGeneralProfile(UpdateGeneralProfileParam param) {
+        int result = facultyService.updateGeneralProfile(param);
 
         return CustomResponseEntity.success(result);
     }

@@ -1,9 +1,6 @@
 package com.fyp.websitebackend.csweb.mapper;
 
-import com.fyp.websitebackend.csweb.domain.Faculty;
-import com.fyp.websitebackend.csweb.domain.HomeCard;
-import com.fyp.websitebackend.csweb.domain.HomeTextBlock;
-import com.fyp.websitebackend.csweb.domain.Label;
+import com.fyp.websitebackend.csweb.domain.*;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -39,4 +36,7 @@ public interface WebsiteMapper {
     List<HomeCard> getAllCard();
 
     List<Faculty> searchFacultyByName(@Param("name") String name, @Param("facultyType") String facultyType);
+
+    @Select("SELECT *, img_url AS imgUrl FROM profile_general WHERE username = #{username}")
+    List<ProfileGeneral> getGeneralProfileByUsername(String username);
 }
