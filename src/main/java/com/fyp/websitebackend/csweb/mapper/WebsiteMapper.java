@@ -45,7 +45,7 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNewGeneralProfile(ProfileGeneral profileGeneral);
 
-    @Select("SELECT *, img_url AS imgUrl, img_name AS imgName FROM profile_card_block WHERE username = #{username}")
+    @Select("SELECT *, img_url AS imgUrl, img_name AS imgName FROM profile_card_block WHERE username = #{username} AND deprecated = 0")
     List<ProfileCardBlock> getProfileCardBlockByUsername(String username);
 
     @Insert("INSERT INTO profile_card_block (username, title, text, url, img_name, img_url, type, deprecated)" +
@@ -53,7 +53,7 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNewCardProfile(ProfileCardBlock profileCardBlock);
 
-    @Select("SELECT *, date_bar AS dateBar, code_segment AS codeSegment FROM profile_custom_block WHERE username = #{username}")
+    @Select("SELECT *, date_bar AS dateBar, code_segment AS codeSegment FROM profile_custom_block WHERE username = #{username} AND deprecated = 0")
     List<ProfileCustomBlock> getProfileCustomBlockByUsername(String username);
 
     @Insert("INSERT INTO profile_custom_block (username, date_bar, code_segment, type, deprecated)" +
