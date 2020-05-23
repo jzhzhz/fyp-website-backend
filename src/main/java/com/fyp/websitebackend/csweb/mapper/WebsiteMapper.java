@@ -16,7 +16,7 @@ public interface WebsiteMapper {
     @Insert("INSERT INTO cards (title, text, url, img_name, img_url, date, deprecated)" +
             "VALUES (#{title}, #{text}, #{url}, #{imgName}, #{imgUrl}, #{date}, #{deprecated})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    int insertNewCard(HomeCard homeCard);
+    void insertNewCard(HomeCard homeCard);
 
     @Select("SELECT * , code_content AS codeContent FROM navbar_labels WHERE deprecated = 0 AND type = #{labelType}")
     List<Label> selectAllLabels(String labelType);
@@ -24,7 +24,10 @@ public interface WebsiteMapper {
     @Insert("INSERT INTO navbar_labels (label, url, code_content, deprecated, type)" +
             "VALUES (#{label}, #{url}, #{codeContent}, #{deprecated}, #{type})")
     @Options(useGeneratedKeys = true, keyColumn = "id")
-    int insertNewLabel(Label label);
+    void insertNewLabel(Label label);
+
+    @Select("SELECT *, img_url AS imgUrl FROM cards WHERE deprecated = 0")
+    List<HomeCard> getAllCard();
 
     @Select("SELECT * FROM faculty")
     List<Faculty> getAllFaculties();
@@ -32,11 +35,29 @@ public interface WebsiteMapper {
     @Select("SELECT * FROM faculty WHERE type = #{facultyType} ORDER BY name")
     List<Faculty> getFacultyByType(String facultyType);
 
-    @Select("SELECT *, img_url AS imgUrl FROM cards WHERE deprecated = 0")
-    List<HomeCard> getAllCard();
-
     List<Faculty> searchFacultyByName(@Param("name") String name, @Param("facultyType") String facultyType);
 
     @Select("SELECT *, img_url AS imgUrl FROM profile_general WHERE username = #{username}")
     List<ProfileGeneral> getGeneralProfileByUsername(String username);
+
+    @Insert("INSERT INTO profile_general (username, intro, sidebar, img_url)" +
+            "VALUES (#{username}, #{intro}, #{sidebar}, #{imgUrl})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNewGeneralProfile(ProfileGeneral profileGeneral);
+
+    @Select("SELECT *, img_url AS imgUrl, img_name AS imgName FROM profile_card_block WHERE username = #{username}")
+    List<ProfileCardBlock> getProfileCardBlockByUsername(String username);
+
+    @Insert("INSERT INTO profile_card_block (username, title, text, url, img_name, img_url, type, deprecated)" +
+            "VALUES (#{username}, #{title}, #{text}, #{url}, #{imgName}, #{imgUrl}, #{type}, #{deprecated})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNewCardProfile(ProfileCardBlock profileCardBlock);
+
+    @Select("SELECT *, date_bar AS dateBar, code_segment AS codeSegment FROM profile_custom_block WHERE username = #{username}")
+    List<ProfileCustomBlock> getProfileCustomBlockByUsername(String username);
+
+    @Insert("INSERT INTO profile_custom_block (username, date_bar, code_segment, type, deprecated)" +
+            "VALUES (#{username}, #{dateBar}, #{codeSegment}, #{type}, #{deprecated})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNewCustomProfile(ProfileCustomBlock profileCustomBlock);
 }

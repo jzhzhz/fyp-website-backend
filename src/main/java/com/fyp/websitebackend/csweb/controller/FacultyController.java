@@ -1,10 +1,10 @@
 package com.fyp.websitebackend.csweb.controller;
 
 import com.fyp.websitebackend.common.entity.CustomResponseEntity;
-import com.fyp.websitebackend.csweb.controller.param.SearchFacultyParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateFacultyUrlParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateGeneralProfileParam;
+import com.fyp.websitebackend.csweb.controller.param.*;
 import com.fyp.websitebackend.csweb.domain.Faculty;
+import com.fyp.websitebackend.csweb.domain.ProfileCardBlock;
+import com.fyp.websitebackend.csweb.domain.ProfileCustomBlock;
 import com.fyp.websitebackend.csweb.domain.ProfileGeneral;
 import com.fyp.websitebackend.csweb.service.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +42,37 @@ public class FacultyController {
         return CustomResponseEntity.success(result);
     }
 
-    @RequestMapping("updateGeneralProfile")
-    public CustomResponseEntity updateGeneralProfile(UpdateGeneralProfileParam param) {
+    @RequestMapping("/updateGeneralProfile")
+    public CustomResponseEntity updateGeneralProfile(UpdateProfileGeneralParam param) {
         int result = facultyService.updateGeneralProfile(param);
+
+        return CustomResponseEntity.success(result);
+    }
+
+    @RequestMapping("/getProfileCard")
+    public CustomResponseEntity getProfileCard(String username) {
+        List<ProfileCardBlock> profileCardBlocks = facultyService.getProfileCardBlockByUsername(username);
+
+        return CustomResponseEntity.success(profileCardBlocks);
+    }
+
+    @RequestMapping("/updateProfileCard")
+    public CustomResponseEntity updateProfileCard(UpdateProfileCardParam param) {
+        int result = facultyService.updateProfileCard(param);
+
+        return CustomResponseEntity.success(result);
+    }
+
+    @RequestMapping("/getProfileCustom")
+    public CustomResponseEntity getProfileCustom(String username) {
+        List<ProfileCustomBlock> profileCustomBlocks = facultyService.getProfileCustomBlockByUsername(username);
+
+        return CustomResponseEntity.success(profileCustomBlocks);
+    }
+
+    @RequestMapping("/updateProfileCustom")
+    public CustomResponseEntity updateProfileCustom(UpdateProfileCustomParam param) {
+        int result = facultyService.updateCustomProfile(param);
 
         return CustomResponseEntity.success(result);
     }

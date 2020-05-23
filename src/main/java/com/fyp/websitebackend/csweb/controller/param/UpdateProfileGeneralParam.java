@@ -1,6 +1,6 @@
 package com.fyp.websitebackend.csweb.controller.param;
 
-public class UpdateGeneralProfileParam {
+public class UpdateProfileGeneralParam {
     private String username;
 
     private String intro;

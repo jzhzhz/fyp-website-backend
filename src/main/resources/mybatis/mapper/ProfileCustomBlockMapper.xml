@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fyp.websitebackend.csweb.mapper.ProfileCustomBlockMapper" >
+  <resultMap id="BaseResultMap" type="com.fyp.websitebackend.csweb.domain.ProfileCustomBlock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="date_bar" property="dateBar" jdbcType="VARCHAR" />
+    <result column="code_segment" property="codeSegment" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="deprecated" property="deprecated" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, username, date_bar, code_segment, type, deprecated
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlockExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from profile_custom_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from profile_custom_block
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from profile_custom_block
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlockExample" >
+    delete from profile_custom_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlock" >
+    insert into profile_custom_block (id, username, date_bar, 
+      code_segment, type, deprecated
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{dateBar,jdbcType=VARCHAR}, 
+      #{codeSegment,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{deprecated,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlock" >
+    insert into profile_custom_block
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="dateBar != null" >
+        date_bar,
+      </if>
+      <if test="codeSegment != null" >
+        code_segment,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="deprecated != null" >
+        deprecated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="dateBar != null" >
+        #{dateBar,jdbcType=VARCHAR},
+      </if>
+      <if test="codeSegment != null" >
+        #{codeSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="deprecated != null" >
+        #{deprecated,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlockExample" resultType="java.lang.Integer" >
+    select count(*) from profile_custom_block
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update profile_custom_block
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dateBar != null" >
+        date_bar = #{record.dateBar,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeSegment != null" >
+        code_segment = #{record.codeSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deprecated != null" >
+        deprecated = #{record.deprecated,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update profile_custom_block
+    set id = #{record.id,jdbcType=INTEGER},
+      username = #{record.username,jdbcType=VARCHAR},
+      date_bar = #{record.dateBar,jdbcType=VARCHAR},
+      code_segment = #{record.codeSegment,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=VARCHAR},
+      deprecated = #{record.deprecated,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlock" >
+    update profile_custom_block
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="dateBar != null" >
+        date_bar = #{dateBar,jdbcType=VARCHAR},
+      </if>
+      <if test="codeSegment != null" >
+        code_segment = #{codeSegment,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="deprecated != null" >
+        deprecated = #{deprecated,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCustomBlock" >
+    update profile_custom_block
+    set username = #{username,jdbcType=VARCHAR},
+      date_bar = #{dateBar,jdbcType=VARCHAR},
+      code_segment = #{codeSegment,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      deprecated = #{deprecated,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
