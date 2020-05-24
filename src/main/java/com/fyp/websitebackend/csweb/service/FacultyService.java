@@ -38,6 +38,18 @@ public class FacultyService {
         return facultyList;
     }
 
+    public List<Faculty> getFacultyByUsername(String username) {
+        FacultyExample facultyExample = new FacultyExample();
+        facultyExample.createCriteria().andUsernameEqualTo(username);
+
+        List<Faculty> facultyList = facultyMapper.selectByExample(facultyExample);
+        if (facultyList == null || facultyList.size() <= 0) {
+            return new ArrayList<>(0);
+        }
+
+        return facultyList;
+    }
+
     public List<ProfileGeneral> getGeneralProfileByUsername(String username) {
         List<ProfileGeneral> profileGenerals = websiteMapper.getGeneralProfileByUsername(username);
 

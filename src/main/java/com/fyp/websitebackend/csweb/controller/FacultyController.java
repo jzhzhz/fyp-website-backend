@@ -39,6 +39,13 @@ public class FacultyController {
         return CustomResponseEntity.success(facultyList);
     }
 
+    @RequestMapping("/getFacultyByUsername")
+    public CustomResponseEntity getFacultyByUsername(String username) {
+        List<Faculty> facultyList = facultyService.getFacultyByUsername(username);
+
+        return CustomResponseEntity.success(facultyList);
+    }
+
     @RequestMapping("/getGeneralProfile")
     public CustomResponseEntity getGeneralProfile(String username) {
         List<ProfileGeneral> profileGenerals = facultyService.getGeneralProfileByUsername(username);
