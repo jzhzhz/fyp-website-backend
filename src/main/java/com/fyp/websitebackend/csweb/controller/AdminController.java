@@ -91,23 +91,6 @@ public class AdminController {
         }
     }
 
-    @RequestMapping("/uploadProfilePic")
-    public CustomResponseEntity uploadProfilePic(@RequestParam("file") MultipartFile file) {
-        String fileType = file.getContentType();
-
-        if (WebConstants.CARD_PIC_TYPES.contains(fileType)) {
-            String visitUrl = adminService.saveCardPicture(file, "profile");
-
-            logger.info(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
-            return CustomResponseEntity.success(visitUrl);
-        } else {
-            logger.warn(String.format("File name '%s' has invalid file type, which is %s",
-                    file.getOriginalFilename(),
-                    file.getContentType()));
-            return CustomResponseEntity.error("invalid file type!");
-        }
-    }
-
     @RequestMapping("/getFacultyExcelFile")
     public ResponseEntity<?> getFacultyExcel() {
         byte[] excelBytes;
