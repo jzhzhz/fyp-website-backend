@@ -9,6 +9,8 @@ public class ProfileGeneral {
 
     private String sidebar;
 
+    private String imgName;
+
     private String imgUrl;
 
     public Integer getId() {
@@ -41,6 +43,14 @@ public class ProfileGeneral {
 
     public void setSidebar(String sidebar) {
         this.sidebar = sidebar == null ? null : sidebar.trim();
+    }
+
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName == null ? null : imgName.trim();
     }
 
     public String getImgUrl() {

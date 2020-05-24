@@ -7,6 +7,8 @@ public class UpdateProfileGeneralParam {
 
     private String sidebar;
 
+    private String imgName;
+
     private String imgUrl;
 
     public String getUsername() {
@@ -31,6 +33,14 @@ public class UpdateProfileGeneralParam {
 
     public void setSidebar(String sidebar) {
         this.sidebar = sidebar;
+    }
+
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
     }
 
     public String getImgUrl() {

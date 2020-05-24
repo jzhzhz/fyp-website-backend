@@ -6,6 +6,7 @@
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="intro" property="intro" jdbcType="VARCHAR" />
     <result column="sidebar" property="sidebar" jdbcType="VARCHAR" />
+    <result column="img_name" property="imgName" jdbcType="VARCHAR" />
     <result column="img_url" property="imgUrl" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, intro, sidebar, img_url
+    id, username, intro, sidebar, img_name, img_url
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fyp.websitebackend.csweb.domain.ProfileGeneralExample" >
     select
@@ -102,9 +103,11 @@
   </delete>
   <insert id="insert" parameterType="com.fyp.websitebackend.csweb.domain.ProfileGeneral" >
     insert into profile_general (id, username, intro, 
-      sidebar, img_url)
+      sidebar, img_name, img_url
+      )
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{intro,jdbcType=VARCHAR}, 
-      #{sidebar,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR})
+      #{sidebar,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.fyp.websitebackend.csweb.domain.ProfileGeneral" >
     insert into profile_general
@@ -120,6 +123,9 @@
       </if>
       <if test="sidebar != null" >
         sidebar,
+      </if>
+      <if test="imgName != null" >
+        img_name,
       </if>
       <if test="imgUrl != null" >
         img_url,
@@ -137,6 +143,9 @@
       </if>
       <if test="sidebar != null" >
         #{sidebar,jdbcType=VARCHAR},
+      </if>
+      <if test="imgName != null" >
+        #{imgName,jdbcType=VARCHAR},
       </if>
       <if test="imgUrl != null" >
         #{imgUrl,jdbcType=VARCHAR},
@@ -164,6 +173,9 @@
       <if test="record.sidebar != null" >
         sidebar = #{record.sidebar,jdbcType=VARCHAR},
       </if>
+      <if test="record.imgName != null" >
+        img_name = #{record.imgName,jdbcType=VARCHAR},
+      </if>
       <if test="record.imgUrl != null" >
         img_url = #{record.imgUrl,jdbcType=VARCHAR},
       </if>
@@ -178,6 +190,7 @@
       username = #{record.username,jdbcType=VARCHAR},
       intro = #{record.intro,jdbcType=VARCHAR},
       sidebar = #{record.sidebar,jdbcType=VARCHAR},
+      img_name = #{record.imgName,jdbcType=VARCHAR},
       img_url = #{record.imgUrl,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -195,6 +208,9 @@
       <if test="sidebar != null" >
         sidebar = #{sidebar,jdbcType=VARCHAR},
       </if>
+      <if test="imgName != null" >
+        img_name = #{imgName,jdbcType=VARCHAR},
+      </if>
       <if test="imgUrl != null" >
         img_url = #{imgUrl,jdbcType=VARCHAR},
       </if>
@@ -206,6 +222,7 @@
     set username = #{username,jdbcType=VARCHAR},
       intro = #{intro,jdbcType=VARCHAR},
       sidebar = #{sidebar,jdbcType=VARCHAR},
+      img_name = #{imgName,jdbcType=VARCHAR},
       img_url = #{imgUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
