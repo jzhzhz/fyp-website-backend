@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="username" property="username" jdbcType="VARCHAR" />
     <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="subtitle" property="subtitle" jdbcType="VARCHAR" />
     <result column="text" property="text" jdbcType="VARCHAR" />
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="img_name" property="imgName" jdbcType="VARCHAR" />
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, username, title, text, url, img_name, img_url, type, deprecated
+    id, username, title, subtitle, text, url, img_name, img_url, type, deprecated
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCardBlockExample" >
     select
@@ -106,13 +107,13 @@
   </delete>
   <insert id="insert" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCardBlock" >
     insert into profile_card_block (id, username, title, 
-      text, url, img_name, 
-      img_url, type, deprecated
-      )
+      subtitle, text, url, 
+      img_name, img_url, type, 
+      deprecated)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
-      #{text,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, 
-      #{imgUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{deprecated,jdbcType=INTEGER}
-      )
+      #{subtitle,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{imgName,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{deprecated,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.fyp.websitebackend.csweb.domain.ProfileCardBlock" >
     insert into profile_card_block
@@ -125,6 +126,9 @@
       </if>
       <if test="title != null" >
         title,
+      </if>
+      <if test="subtitle != null" >
+        subtitle,
       </if>
       <if test="text != null" >
         text,
@@ -154,6 +158,9 @@
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        #{subtitle,jdbcType=VARCHAR},
       </if>
       <if test="text != null" >
         #{text,jdbcType=VARCHAR},
@@ -193,6 +200,9 @@
       <if test="record.title != null" >
         title = #{record.title,jdbcType=VARCHAR},
       </if>
+      <if test="record.subtitle != null" >
+        subtitle = #{record.subtitle,jdbcType=VARCHAR},
+      </if>
       <if test="record.text != null" >
         text = #{record.text,jdbcType=VARCHAR},
       </if>
@@ -221,6 +231,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       username = #{record.username,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
+      subtitle = #{record.subtitle,jdbcType=VARCHAR},
       text = #{record.text,jdbcType=VARCHAR},
       url = #{record.url,jdbcType=VARCHAR},
       img_name = #{record.imgName,jdbcType=VARCHAR},
@@ -239,6 +250,9 @@
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subtitle != null" >
+        subtitle = #{subtitle,jdbcType=VARCHAR},
       </if>
       <if test="text != null" >
         text = #{text,jdbcType=VARCHAR},
@@ -265,6 +279,7 @@
     update profile_card_block
     set username = #{username,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
+      subtitle = #{subtitle,jdbcType=VARCHAR},
       text = #{text,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR},
       img_name = #{imgName,jdbcType=VARCHAR},

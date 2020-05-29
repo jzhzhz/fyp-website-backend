@@ -7,6 +7,8 @@ public class ProfileCardBlock {
 
     private String title;
 
+    private String subtitle;
+
     private String text;
 
     private String url;
@@ -41,6 +43,14 @@ public class ProfileCardBlock {
 
     public void setTitle(String title) {
         this.title = title == null ? null : title.trim();
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public void setSubtitle(String subtitle) {
+        this.subtitle = subtitle == null ? null : subtitle.trim();
     }
 
     public String getText() {
