@@ -1,10 +1,9 @@
 package com.fyp.websitebackend.csweb.service;
 
+import com.fyp.websitebackend.common.constants.WebConstants;
 import com.fyp.websitebackend.csweb.controller.vo.HomeTextBlockVO;
-import com.fyp.websitebackend.csweb.domain.Faculty;
-import com.fyp.websitebackend.csweb.domain.HomeCard;
-import com.fyp.websitebackend.csweb.domain.HomeTextBlock;
-import com.fyp.websitebackend.csweb.domain.Label;
+import com.fyp.websitebackend.csweb.domain.*;
+import com.fyp.websitebackend.csweb.mapper.HomeEventsCardMapper;
 import com.fyp.websitebackend.csweb.mapper.WebsiteMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ import java.util.List;
 public class WebsiteService {
     @Autowired
     WebsiteMapper websiteMapper;
+
+    @Autowired
+    HomeEventsCardMapper homeEventsCardMapper;
 
     public List<Label> findAllLabels(String labelType) {
         return websiteMapper.selectAllLabels(labelType);
@@ -56,6 +58,19 @@ public class WebsiteService {
 
     public List<HomeCard> getAllCards() {
         return websiteMapper.getAllCard();
+    }
+
+    public List<HomeEventsCard> getAllEvents() {
+        HomeEventsCardExample example = new HomeEventsCardExample();
+        example.createCriteria().andDeprecatedEqualTo(WebConstants.RECORD_NOT_DEPRECATED);
+
+        List<HomeEventsCard> homeEventsCards = homeEventsCardMapper.selectByExample(example);
+
+        if (homeEventsCards == null || homeEventsCards.size() <= 0) {
+            return new ArrayList<>(0);
+        } else {
+            return homeEventsCards;
+        }
     }
 
     public byte[] getCardImgByUrl(String visitUrl) throws IOException {

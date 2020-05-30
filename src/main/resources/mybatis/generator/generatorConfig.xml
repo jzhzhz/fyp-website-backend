@@ -34,7 +34,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="profile_card_block" domainObjectName="ProfileCardBlock"
+        <table tableName="home_events" domainObjectName="HomeEventsCard"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">

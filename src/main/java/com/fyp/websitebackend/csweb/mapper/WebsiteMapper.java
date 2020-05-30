@@ -18,6 +18,11 @@ public interface WebsiteMapper {
     @Options(useGeneratedKeys = true, keyColumn = "id")
     void insertNewCard(HomeCard homeCard);
 
+    @Insert("INSERT INTO home_events (title, subtitle, content, url, deprecated)" +
+            "VALUES (#{title}, #{subtitle}, #{content}, #{url}, #{deprecated})")
+    @Options(useGeneratedKeys = true, keyColumn = "id")
+    void insertNewEventsCard(HomeEventsCard homeEventsCard);
+
     @Select("SELECT * , code_content AS codeContent FROM navbar_labels WHERE deprecated = 0 AND type = #{labelType}")
     List<Label> selectAllLabels(String labelType);
 

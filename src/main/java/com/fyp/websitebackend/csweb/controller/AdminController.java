@@ -2,10 +2,7 @@ package com.fyp.websitebackend.csweb.controller;
 
 import com.fyp.websitebackend.common.constants.WebConstants;
 import com.fyp.websitebackend.common.entity.CustomResponseEntity;
-import com.fyp.websitebackend.csweb.controller.param.CheckAdminParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateHomeCardParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateHomeTextBlockParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateLabelParam;
+import com.fyp.websitebackend.csweb.controller.param.*;
 import com.fyp.websitebackend.csweb.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +50,13 @@ public class AdminController {
     @RequestMapping("/createNewCard")
     public CustomResponseEntity createNewCard(UpdateHomeCardParam updateHomeCardParam) {
         int result = adminService.createNewCard(updateHomeCardParam);
+
+        return CustomResponseEntity.success(result);
+    }
+
+    @RequestMapping("/updateEventsCardById")
+    public CustomResponseEntity updateEventsCard(UpdateHomeEventsCardParam param) {
+        int result = adminService.updateEventsCardById(param);
 
         return CustomResponseEntity.success(result);
     }

@@ -1,9 +1,6 @@
 package com.fyp.websitebackend.csweb.service;
 
-import com.fyp.websitebackend.csweb.controller.param.CheckAdminParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateHomeCardParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateHomeTextBlockParam;
-import com.fyp.websitebackend.csweb.controller.param.UpdateLabelParam;
+import com.fyp.websitebackend.csweb.controller.param.*;
 import com.fyp.websitebackend.csweb.domain.*;
 import com.fyp.websitebackend.csweb.mapper.*;
 import org.apache.poi.ss.usermodel.Row;
@@ -41,6 +38,9 @@ public class AdminService {
 
     @Autowired
     HomeCardMapper homeCardMapper;
+
+    @Autowired
+    HomeEventsCardMapper homeEventsCardMapper;
 
     private Logger logger = LoggerFactory.getLogger(AdminService.class);
 
@@ -104,6 +104,26 @@ public class AdminService {
                 .andIdEqualTo(updateHomeCardParam.getId());
 
         return homeCardMapper.updateByExampleSelective(homeCard, homeCardExample);
+    }
+
+    public int updateEventsCardById(UpdateHomeEventsCardParam param) {
+        HomeEventsCard homeEventsCard = new HomeEventsCard();
+        BeanUtils.copyProperties(param, homeEventsCard);
+
+        // set example with id in the param to search existing record
+        HomeEventsCardExample example = new HomeEventsCardExample();
+        example.createCriteria().andIdEqualTo(param.getId());
+
+        List<HomeEventsCard> retEvents = homeEventsCardMapper.selectByExample(example);
+
+        if (retEvents == null || retEvents.size() <= 0) {
+            websiteMapper.insertNewEventsCard(homeEventsCard);
+
+            return homeEventsCard.getId();
+        } else {
+            // return 0
+            return homeEventsCardMapper.updateByExampleSelective(homeEventsCard, example) - 1;
+        }
     }
 
     public String saveCardPicture(MultipartFile pictureFile, String picType) {

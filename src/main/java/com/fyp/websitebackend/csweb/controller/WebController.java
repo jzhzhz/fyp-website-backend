@@ -4,6 +4,7 @@ import com.fyp.websitebackend.common.entity.CustomResponseEntity;
 import com.fyp.websitebackend.csweb.controller.vo.HomeTextBlockVO;
 import com.fyp.websitebackend.csweb.domain.Faculty;
 import com.fyp.websitebackend.csweb.domain.HomeCard;
+import com.fyp.websitebackend.csweb.domain.HomeEventsCard;
 import com.fyp.websitebackend.csweb.domain.Label;
 import com.fyp.websitebackend.csweb.service.WebsiteService;
 import org.slf4j.Logger;
@@ -60,6 +61,13 @@ public class WebController {
         List<HomeCard> homeCards = websiteService.getAllCards();
 
         return CustomResponseEntity.success(homeCards);
+    }
+
+    @RequestMapping("/getAllEvents")
+    public CustomResponseEntity getAllEvents() {
+        List<HomeEventsCard> homeEventsCards = websiteService.getAllEvents();
+
+        return CustomResponseEntity.success(homeEventsCards);
     }
 
     @RequestMapping("/getCardImgByUrl")
