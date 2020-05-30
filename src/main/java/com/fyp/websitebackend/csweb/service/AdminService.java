@@ -21,6 +21,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class AdminService {
@@ -181,10 +183,11 @@ public class AdminService {
     }
 
     public byte[] getFacultyExcelFile() throws IOException {
-        List<Faculty> facultyList = websiteMapper.getAllFaculties();
         Workbook wb = new XSSFWorkbook();
-        Sheet facultySheet = wb.createSheet("faculty list");
 
+        /* copy faculty information to excel sheet */
+        List<Faculty> facultyList = websiteMapper.getAllFaculties();
+        Sheet facultySheet = wb.createSheet("faculty list");
         String[] headCol = {"Id", "Name", "Username", "Phone", "Office",
             "Email", "URL", "Type"};
         Row headerRow = facultySheet.createRow(0);
@@ -212,9 +215,69 @@ public class AdminService {
         for (int i = 1; i < headCol.length; i++) {
             facultySheet.autoSizeColumn(i);
         }
+        /* end faculty info copying */
+
+        List<Admin> adminList = websiteMapper.getAllAdmins();
+        Sheet adminSheet = wb.createSheet("admin list");
+        String[] adminHeader = {"Id", "Name", "Password", "Type"};
+        Row adminHeaderRow = adminSheet.createRow(0);
+
+        for (int i = 0; i < adminHeader.length; i++) {
+            adminHeaderRow.createCell(i).setCellValue(adminHeader[i]);
+        }
+
+        for (int i = 0; i < adminList.size(); i++) {
+            eachRow = adminSheet.createRow(i+1);
+            Admin admin = adminList.get(i);
+
+            eachRow.createCell(0).setCellValue(admin.getId());
+            eachRow.createCell(1).setCellValue(admin.getName());
+            eachRow.createCell(2).setCellValue(admin.getPassword());
+            eachRow.createCell(3).setCellValue(admin.getType());
+        }
+
+        for (int i = 1; i < adminHeader.length; i++) {
+            adminSheet.autoSizeColumn(i);
+        }
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         wb.write(bos);
+
+        return bos.toByteArray();
+    }
+
+    private String getHomeSidebarCode() {
+        HomeTextBlockExample example = new HomeTextBlockExample();
+        example.createCriteria().andTypeEqualTo("sidebar");
+        List<HomeTextBlock> homeTextBlocks = homeTextBlockMapper.selectByExample(example);
+
+        if (homeTextBlocks == null || homeTextBlocks.size() <= 0) {
+            return null;
+        } else {
+            // sidebar code segment is stored in content
+            return homeTextBlocks.get(0).getContent();
+        }
+    }
+
+    public byte[] getBackendData() throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ZipOutputStream zos = new ZipOutputStream(bos);
+
+        // put bytes in the excel zip entry
+        zos.putNextEntry(new ZipEntry("faculty-list.xlsx"));
+        byte[] facultyWbBytes = this.getFacultyExcelFile();
+        zos.write(facultyWbBytes);
+        zos.closeEntry();
+
+        String sidebarCode = this.getHomeSidebarCode();
+        if (sidebarCode != null) {
+            zos.putNextEntry(new ZipEntry("sidebar-code-segment.txt"));
+            zos.write(sidebarCode.getBytes());
+            zos.closeEntry();
+        }
+
+        // ending zos writing
+        zos.close();
 
         return bos.toByteArray();
     }

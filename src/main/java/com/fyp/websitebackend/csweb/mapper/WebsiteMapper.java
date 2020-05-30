@@ -37,6 +37,9 @@ public interface WebsiteMapper {
     @Select("SELECT * FROM faculty")
     List<Faculty> getAllFaculties();
 
+    @Select("SELECT * FROM admins")
+    List<Admin> getAllAdmins();
+
     @Select("SELECT * FROM faculty WHERE type = #{facultyType} ORDER BY name")
     List<Faculty> getFacultyByType(String facultyType);
 
