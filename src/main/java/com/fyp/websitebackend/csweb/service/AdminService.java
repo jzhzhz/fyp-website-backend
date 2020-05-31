@@ -1,12 +1,13 @@
 package com.fyp.websitebackend.csweb.service;
 
+import com.fyp.websitebackend.common.Utils.CommonUtils;
 import com.fyp.websitebackend.csweb.controller.param.*;
 import com.fyp.websitebackend.csweb.domain.*;
 import com.fyp.websitebackend.csweb.mapper.*;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,6 +31,9 @@ import java.util.zip.ZipOutputStream;
 public class AdminService {
     @Autowired
     AdminMapper adminMapper;
+
+    @Autowired
+    FacultyMapper facultyMapper;
 
     @Autowired
     HomeTextBlockMapper homeTextBlockMapper;
@@ -280,5 +286,51 @@ public class AdminService {
         zos.close();
 
         return bos.toByteArray();
+    }
+
+    public int updateDataByExcelFile(MultipartFile excelFile) throws IOException, InvalidFormatException {
+//        File retExcelFile = CommonUtils.multipartToFile(excelFile, excelFile.getOriginalFilename());
+        Workbook wb = WorkbookFactory.create(excelFile.getInputStream());
+
+        Sheet facultySheet = wb.getSheet("faculty list");
+
+        if (facultySheet == null || isSheetEmpty(facultySheet)) {
+            throw new IllegalArgumentException("cannot find faculty sheet!");
+        }
+
+        IntStream.range(1, facultySheet.getLastRowNum())
+                .forEach(index -> {
+                    Row row = facultySheet.getRow(index);
+                    Faculty faculty = new Faculty();
+                    // go thorough faculty row to put in faculty values
+                    faculty.setId((int) row.getCell(0).getNumericCellValue());
+                    faculty.setName(row.getCell(1).getStringCellValue());
+                    faculty.setUsername(row.getCell(2).getStringCellValue());
+                    faculty.setPhone(row.getCell(3).getStringCellValue());
+                    faculty.setOffice(row.getCell(4).getStringCellValue());
+                    faculty.setEmail(row.getCell(5).getStringCellValue());
+                    faculty.setUrl(row.getCell(6).getStringCellValue());
+                    faculty.setType(row.getCell(7).getStringCellValue());
+
+                    FacultyExample example = new FacultyExample();
+                    example.createCriteria().andIdEqualTo(faculty.getId());
+                    facultyMapper.updateByExampleSelective(faculty, example);
+                });
+
+        return 0;
+    }
+
+    private boolean isSheetEmpty(Sheet sheet) {
+        Iterator rows = sheet.rowIterator();
+        while (rows.hasNext()) {
+            Row row = (Row) rows.next();
+            Iterator cells = row.cellIterator();
+            while (cells.hasNext()) {
+                Cell cell = (Cell) cells.next();
+                DataFormatter dataFormatter = new DataFormatter();
+                return dataFormatter.formatCellValue(cell).isEmpty();
+            }
+        }
+        return false;
     }
 }
