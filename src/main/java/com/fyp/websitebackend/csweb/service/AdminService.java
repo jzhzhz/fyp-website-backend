@@ -223,6 +223,7 @@ public class AdminService {
         }
         /* end faculty info copying */
 
+        /* copy admin information to excel sheet */
         List<Admin> adminList = websiteMapper.getAllAdmins();
         Sheet adminSheet = wb.createSheet("admin list");
         String[] adminHeader = {"Id", "Name", "Password", "Type"};
@@ -245,6 +246,7 @@ public class AdminService {
         for (int i = 1; i < adminHeader.length; i++) {
             adminSheet.autoSizeColumn(i);
         }
+        /* end admin info copying */
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         wb.write(bos);
@@ -265,6 +267,87 @@ public class AdminService {
         }
     }
 
+    public byte[] getHomePageExcelFile() throws IOException {
+        Workbook wb = new XSSFWorkbook();
+
+        List<HomeTextBlock> homeTextBlocks = websiteMapper.getAllHomeTextBlock();
+        Sheet homeTextBlockSheet = wb.createSheet("home text blocks");
+        String[] homeTextBlockHeader = {"Id", "Title", "Content", "Url", "Type", "deprecated"};
+        Row headerRow = homeTextBlockSheet.createRow(0);
+
+        for (int i = 0; i < homeTextBlockHeader.length; i++) {
+            headerRow.createCell(i).setCellValue(homeTextBlockHeader[i]);
+        }
+
+        Row eachRow = null;
+        for (int i = 0; i < homeTextBlocks.size(); i++) {
+            eachRow = homeTextBlockSheet.createRow(i+1);
+            HomeTextBlock homeTextBlock = homeTextBlocks.get(i);
+
+            eachRow.createCell(0).setCellValue(homeTextBlock.getId());
+            eachRow.createCell(1).setCellValue(homeTextBlock.getTitle());
+            eachRow.createCell(2).setCellValue(homeTextBlock.getContent());
+            eachRow.createCell(3).setCellValue(homeTextBlock.getUrl());
+            eachRow.createCell(4).setCellValue(homeTextBlock.getType());
+            eachRow.createCell(5).setCellValue(homeTextBlock.getDeprecated());
+        }
+
+        Sheet homeCardsSheet = wb.createSheet("home cards");
+        List<HomeCard> homeCards = websiteMapper.getAllCards();
+        String[] homeCardsHeader = {"Id", "Title", "Text", "Date", "Url", "ImgName", "ImgUrl", "Deprecated"};
+        headerRow = homeCardsSheet.createRow(0);
+
+        for (int i = 0; i < homeCardsHeader.length; i++) {
+            headerRow.createCell(i).setCellValue(homeCardsHeader[i]);
+        }
+
+        for (int i = 0; i < homeCards.size(); i++) {
+            eachRow = homeCardsSheet.createRow(i+1);
+            HomeCard homeCard = homeCards.get(i);
+
+            eachRow.createCell(0).setCellValue(homeCard.getId());
+            eachRow.createCell(1).setCellValue(homeCard.getTitle());
+            eachRow.createCell(2).setCellValue(homeCard.getText());
+            eachRow.createCell(3).setCellValue(homeCard.getDate());
+            eachRow.createCell(4).setCellValue(homeCard.getUrl());
+            eachRow.createCell(5).setCellValue(homeCard.getImgName());
+            eachRow.createCell(6).setCellValue(homeCard.getImgUrl());
+            eachRow.createCell(7).setCellValue(homeCard.getDeprecated());
+        }
+
+        Sheet homeEventsSheet = wb.createSheet("home events");
+        List<HomeEventsCard> eventsCards = websiteMapper.getAllEvents();
+        String[] eventsHeader = {"Id", "Title", "Subtitle", "Content", "Url", "Deprecated"};
+        headerRow = homeEventsSheet.createRow(0);
+
+        for (int i = 0; i < eventsHeader.length; i++) {
+            headerRow.createCell(i).setCellValue(eventsHeader[i]);
+        }
+
+        for (int i = 0; i < eventsCards.size(); i++) {
+            eachRow = homeEventsSheet.createRow(i+1);
+            HomeEventsCard homeEventsCard = eventsCards.get(i);
+
+            eachRow.createCell(0).setCellValue(homeEventsCard.getId());
+            eachRow.createCell(1).setCellValue(homeEventsCard.getTitle());
+            eachRow.createCell(2).setCellValue(homeEventsCard.getSubtitle());
+            eachRow.createCell(3).setCellValue(homeEventsCard.getContent());
+            eachRow.createCell(4).setCellValue(homeEventsCard.getUrl());
+            eachRow.createCell(5).setCellValue(homeEventsCard.getDeprecated());
+        }
+
+        for (int i = 1; i < homeCardsHeader.length; i++) {
+            homeTextBlockSheet.autoSizeColumn(i);
+            homeCardsSheet.autoSizeColumn(i);
+            homeEventsSheet.autoSizeColumn(i);
+        }
+
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        wb.write(bos);
+
+        return bos.toByteArray();
+    }
+
     public byte[] getBackendData() throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ZipOutputStream zos = new ZipOutputStream(bos);
@@ -273,6 +356,11 @@ public class AdminService {
         zos.putNextEntry(new ZipEntry("faculty-list.xlsx"));
         byte[] facultyWbBytes = this.getFacultyExcelFile();
         zos.write(facultyWbBytes);
+        zos.closeEntry();
+
+        zos.putNextEntry(new ZipEntry("home-information.xlsx"));
+        byte[] homeBytes = this.getHomePageExcelFile();
+        zos.write(homeBytes);
         zos.closeEntry();
 
         String sidebarCode = this.getHomeSidebarCode();
@@ -288,7 +376,7 @@ public class AdminService {
         return bos.toByteArray();
     }
 
-    public int updateDataByExcelFile(MultipartFile excelFile) throws IOException, InvalidFormatException {
+    public int updateFacultyDataByExcelFile(MultipartFile excelFile) throws IOException, InvalidFormatException {
 //        File retExcelFile = CommonUtils.multipartToFile(excelFile, excelFile.getOriginalFilename());
         Workbook wb = WorkbookFactory.create(excelFile.getInputStream());
 

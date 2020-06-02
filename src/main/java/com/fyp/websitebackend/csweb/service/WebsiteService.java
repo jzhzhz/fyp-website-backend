@@ -26,7 +26,7 @@ public class WebsiteService {
     HomeEventsCardMapper homeEventsCardMapper;
 
     public List<Label> findAllLabels(String labelType) {
-        return websiteMapper.selectAllLabels(labelType);
+        return websiteMapper.getAllValidLabels(labelType);
     }
 
     public List<HomeTextBlockVO> getHomeTextBlockByType(String type) {
@@ -57,7 +57,7 @@ public class WebsiteService {
     }
 
     public List<HomeCard> getAllCards() {
-        return websiteMapper.getAllCard();
+        return websiteMapper.getAllValidCards();
     }
 
     public List<HomeEventsCard> getAllEvents() {

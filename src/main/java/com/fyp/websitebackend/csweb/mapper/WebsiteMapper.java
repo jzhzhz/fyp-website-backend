@@ -10,6 +10,9 @@ public interface WebsiteMapper {
     @Select("SELECT * FROM home_textblock WHERE type = #{blockType} AND deprecated = 0")
     List<HomeTextBlock> selectHomeTextBlockByType(String blockType);
 
+    @Select("SELECT * FROM home_textblock")
+    List<HomeTextBlock> getAllHomeTextBlock();
+
     @Select(("SELECT * , code_content AS codeContent FROM navbar_labels WHERE deprecated = 0 AND url = #{labelUrl} "))
     List<Label> selectLabelByUrl(String labelUrl);
 
@@ -24,7 +27,7 @@ public interface WebsiteMapper {
     void insertNewEventsCard(HomeEventsCard homeEventsCard);
 
     @Select("SELECT * , code_content AS codeContent FROM navbar_labels WHERE deprecated = 0 AND type = #{labelType}")
-    List<Label> selectAllLabels(String labelType);
+    List<Label> getAllValidLabels(String labelType);
 
     @Insert("INSERT INTO navbar_labels (label, url, code_content, deprecated, type)" +
             "VALUES (#{label}, #{url}, #{codeContent}, #{deprecated}, #{type})")
@@ -32,7 +35,13 @@ public interface WebsiteMapper {
     void insertNewLabel(Label label);
 
     @Select("SELECT *, img_url AS imgUrl FROM cards WHERE deprecated = 0")
-    List<HomeCard> getAllCard();
+    List<HomeCard> getAllValidCards();
+
+    @Select("SELECT *, img_url AS imgUrl FROM cards")
+    List<HomeCard> getAllCards();
+
+    @Select("SELECT * FROM home_events")
+    List<HomeEventsCard> getAllEvents();
 
     @Select("SELECT * FROM faculty")
     List<Faculty> getAllFaculties();

@@ -106,13 +106,29 @@ public class AdminController {
         try {
             excelBytes = adminService.getFacultyExcelFile();
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage());
-            return ResponseEntity.badRequest().body(e);
+            logger.error(Arrays.toString(e.getStackTrace()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
         }
 
         return ResponseEntity.ok()
                 .header("Content-Disposition",
                         "attachment; filename=faculty-list.xlsx")
+                .body(excelBytes);
+    }
+
+    @RequestMapping("/getHomePageExcelFile")
+    public ResponseEntity<?> getHomepageExcelFile() {
+        byte[] excelBytes;
+        try {
+            excelBytes = adminService.getHomePageExcelFile();
+        } catch (Exception e) {
+            logger.error(Arrays.toString(e.getStackTrace()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition",
+                        "attachment; filename=home-information.xlsx")
                 .body(excelBytes);
     }
 
@@ -146,7 +162,7 @@ public class AdminController {
 
         int result = 0;
         try {
-            result = adminService.updateDataByExcelFile(file);
+            result = adminService.updateFacultyDataByExcelFile(file);
         } catch (IllegalArgumentException | InvalidFormatException | IOException e) {
             logger.error(Arrays.toString(e.getStackTrace()));
             e.printStackTrace();
