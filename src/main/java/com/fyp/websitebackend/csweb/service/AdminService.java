@@ -1,20 +1,17 @@
 package com.fyp.websitebackend.csweb.service;
 
-import com.fyp.websitebackend.common.Utils.CommonUtils;
 import com.fyp.websitebackend.csweb.controller.param.*;
 import com.fyp.websitebackend.csweb.domain.*;
 import com.fyp.websitebackend.csweb.mapper.*;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -51,7 +48,7 @@ public class AdminService {
     @Autowired
     HomeEventsCardMapper homeEventsCardMapper;
 
-    private Logger logger = LoggerFactory.getLogger(AdminService.class);
+    private final Logger logger = LoggerFactory.getLogger(AdminService.class);
 
     public boolean checkAdmin(CheckAdminParam checkAdminParam) {
         AdminExample adminExample = new AdminExample();

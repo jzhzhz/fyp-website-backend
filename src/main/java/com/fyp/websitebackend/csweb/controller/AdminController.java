@@ -23,7 +23,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    private Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @RequestMapping("/checkAdmin")
     public CustomResponseEntity checkAdminValidity(CheckAdminParam checkAdminParam) {

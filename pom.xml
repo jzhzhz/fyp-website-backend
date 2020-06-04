@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.fyp</groupId>
     <artifactId>website-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>website-backend</name>
     <description>backend part of the final year project</description>
 
