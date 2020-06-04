@@ -18,6 +18,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -384,6 +385,11 @@ public class AdminService {
 
         if (facultySheet == null || isSheetEmpty(facultySheet)) {
             throw new IllegalArgumentException("cannot find faculty sheet!");
+        }
+
+        Field[] fields = Faculty.class.getDeclaredFields();
+        if (facultySheet.getRow(0).getLastCellNum() != fields.length) {
+            throw new IllegalArgumentException("invalid number of columns!");
         }
 
         IntStream.range(1, facultySheet.getLastRowNum())
