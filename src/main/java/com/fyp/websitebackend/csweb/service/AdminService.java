@@ -384,9 +384,16 @@ public class AdminService {
             throw new IllegalArgumentException("cannot find faculty sheet!");
         }
 
-        Field[] fields = Faculty.class.getDeclaredFields();
-        if (facultySheet.getRow(0).getLastCellNum() != fields.length) {
-            throw new IllegalArgumentException("invalid number of columns!");
+        List<Faculty> faculties = websiteMapper.getAllFaculties();
+        if (facultySheet.getLastRowNum() != faculties.size()) {
+            throw new IllegalArgumentException("invalid number of rows (invalid faculty number)!");
+        }
+
+        for (int i = 0; i < facultySheet.getPhysicalNumberOfRows(); i++) {
+            Field[] fields = Faculty.class.getDeclaredFields();
+            if (facultySheet.getRow(i).getLastCellNum() != fields.length) {
+                throw new IllegalArgumentException("invalid number of columns!");
+            }
         }
 
         IntStream.range(1, facultySheet.getLastRowNum())
@@ -416,7 +423,7 @@ public class AdminService {
         while (rows.hasNext()) {
             Row row = (Row) rows.next();
             Iterator cells = row.cellIterator();
-            while (cells.hasNext()) {
+            if (cells.hasNext()) {
                 Cell cell = (Cell) cells.next();
                 DataFormatter dataFormatter = new DataFormatter();
                 return dataFormatter.formatCellValue(cell).isEmpty();
