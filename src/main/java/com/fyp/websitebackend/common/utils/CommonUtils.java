@@ -1,4 +1,4 @@
-package com.fyp.websitebackend.common.Utils;
+package com.fyp.websitebackend.common.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 

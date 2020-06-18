@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/csWeb")
 @CrossOrigin
 public class WebController {
-    private Logger logger = LoggerFactory.getLogger(WebController.class);
+    private final Logger logger = LoggerFactory.getLogger(WebController.class);
 
     @Autowired
     WebsiteService websiteService;
